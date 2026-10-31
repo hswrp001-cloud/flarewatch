@@ -10,7 +10,7 @@ export const pageConfig: PageConfig = {
     { label: 'Hudo', link: 'https://hudo.thestormsmp.com' },
     { label: 'Syphon', link: 'https://syphon.thestormsmp.com' },
     { label: 'David', link: 'https://david.thestormsmp.com' },
-    { label: 'WWW', link: 'https://www.thestormsmp.com' },
+    { label: 'Main website (www)', link: 'https://www.thestormsmp.com' },
     { label: 'Documentation', link: 'https://docs.thestormsmp.com' },
   ],
   group: {
