@@ -26,7 +26,13 @@ interface StatusBarSegmentProps {
   maintenances: Maintenance[];
 }
 
-function StatusBarSegment({ day, isMobile, onClick, monitorId, maintenances }: StatusBarSegmentProps) {
+function StatusBarSegment({
+  day,
+  isMobile,
+  onClick,
+  monitorId,
+  maintenances,
+}: StatusBarSegmentProps) {
   const displayStatus = maintenanceBarStatus(monitorId, day.date, maintenances) ?? day.status;
   return (
     <Tooltip>
