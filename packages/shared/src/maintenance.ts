@@ -1,4 +1,4 @@
-import type { Maintenance, MaintenanceConfig, MaintenanceRepeat } from './types';
+import type { Maintenance, MaintenanceBarColor, MaintenanceConfig, MaintenanceRepeat } from './types';
 import { isJsonObject, isNonEmptyString } from './utils';
 
 /** One run of a window, in ms. A window with no end runs on: its end is Infinity. */
@@ -217,6 +217,10 @@ const isWeekday = (value: unknown): value is number => isIntFrom(value, 0, 6);
 const isEvery = (value: unknown): value is MaintenanceRepeat['every'] =>
   value === 'day' || value === 'week' || value === 'month';
 
+function isMaintenanceBarColor(value: string): value is MaintenanceBarColor {
+  return value === 'green' || value === 'yellow' || value === 'red';
+}
+
 function normalizeRepeat(
   input: unknown,
   start: number,
@@ -300,6 +304,11 @@ export function normalizeMaintenance(input: unknown, { capped = true } = {}): No
   if (title === null) return { error: 'Title must be text' };
   const color = optionalText(input.color);
   if (color === null) return { error: 'Color must be text' };
+  const barColor = optionalText(input.barColor);
+  if (barColor === null) return { error: 'Uptime bar color must be text' };
+  if (barColor !== undefined && !isMaintenanceBarColor(barColor)) {
+    return { error: 'Uptime bar color must be green, yellow or red' };
+  }
 
   let monitors: string[] | undefined;
   if (input.monitors !== undefined) {
@@ -324,13 +333,14 @@ export function normalizeMaintenance(input: unknown, { capped = true } = {}): No
     ...(end !== undefined && { end: new Date(end).toISOString() }),
     ...(monitors && { monitors }),
     ...(color !== undefined && { color }),
+    ...(barColor !== undefined && { barColor }),
     ...(repeat && { repeat }),
   };
   const error = capped ? overCap(value) : undefined;
   return error ? { error } : { value };
 }
 
-const WINDOW_FIELDS = ['title', 'body', 'start', 'end', 'monitors', 'color', 'repeat'] as const;
+const WINDOW_FIELDS = ['title', 'body', 'start', 'end', 'monitors', 'color', 'barColor', 'repeat'] as const;
 const TIME_FIELDS = new Set(['start', 'end', 'until']);
 
 function sameValue(raw: unknown, normal: unknown, field = ''): boolean {

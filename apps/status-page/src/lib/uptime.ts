@@ -1,5 +1,4 @@
 import type { LatencySample, Maintenance, StatusView } from '@flarewatch/shared';
-import { maintenanceDowntimeMs } from './maintenance-bar';
 import { formatUtc } from './date';
 import { UPTIME_DAYS, UPTIME_THRESHOLDS } from './constants';
 
@@ -21,7 +20,7 @@ function hasMonitorData(monitorId: string, state: StatusView): boolean {
 export function calculateUptimePercent(
   monitorId: string,
   state: StatusView,
-  maintenances: Maintenance[] = [],
+  _maintenances: Maintenance[] = [],
 ): number | null {
   const nowSec = getNowSeconds(state);
   if (nowSec === null) return null;
@@ -50,8 +49,6 @@ export function calculateUptimePercent(
     }
   }
 
-  totalDowntimeSec +=
-    maintenanceDowntimeMs(monitorId, windowStartSec * 1000, nowSec * 1000, maintenances) / 1000;
   totalDowntimeSec = Math.min(totalTimeSec, totalDowntimeSec);
 
   const uptimePercent = ((totalTimeSec - totalDowntimeSec) / totalTimeSec) * 100;
@@ -137,7 +134,7 @@ function generateUnknownDays(baseDate: Date): DailyStatusData[] {
 export function generateDailyStatus(
   monitorId: string,
   state: StatusView,
-  maintenances: Maintenance[] = [],
+  _maintenances: Maintenance[] = [],
 ): DailyStatusData[] {
   const days: DailyStatusData[] = [];
   const nowSec = getNowSeconds(state);
@@ -176,9 +173,6 @@ export function generateDailyStatus(
       ? Math.max(dayStartSec, monitorStartSec)
       : dayStartSec;
     const effectiveDayEndSec = Math.min(dayEndSec, nowSec);
-    const effectiveDayStartMs = effectiveDayStartSec * 1000;
-    const effectiveDayEndMs = effectiveDayEndSec * 1000;
-
     let downtimeInDay = 0;
     const dayIncidents: DayIncidentDetail[] = [];
 
@@ -215,13 +209,7 @@ export function generateDailyStatus(
       }
     }
 
-    downtimeInDay += maintenanceDowntimeMs(
-      monitorId,
-      effectiveDayStartMs,
-      effectiveDayEndMs,
-      maintenances,
-    );
-    const dayDuration = effectiveDayEndMs - effectiveDayStartMs;
+    const dayDuration = (effectiveDayEndSec - effectiveDayStartSec) * 1000;
     downtimeInDay = Math.min(dayDuration, downtimeInDay);
     const uptimePercent =
       dayDuration > 0 ? ((dayDuration - downtimeInDay) / dayDuration) * 100 : 100;

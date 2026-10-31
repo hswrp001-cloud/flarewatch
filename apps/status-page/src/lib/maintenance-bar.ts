@@ -5,13 +5,13 @@ export function maintenanceBarStatus(
   monitorId: string,
   date: Date,
   maintenances: Maintenance[],
-): 'partial' | 'down' | undefined {
+): 'up' | 'partial' | 'down' | undefined {
   const dayStart = date.getTime();
   const dayEnd = dayStart + 24 * 60 * 60 * 1000;
-  let status: 'partial' | 'down' | undefined;
+  let status: 'up' | 'partial' | 'down' | undefined;
 
   for (const maintenance of maintenances) {
-    if (maintenance.color !== 'yellow' && maintenance.color !== 'red') continue;
+    if (maintenance.barColor !== 'green' && maintenance.barColor !== 'yellow' && maintenance.barColor !== 'red') continue;
     if (!coversMonitor(maintenance, monitorId)) continue;
 
     const occurrence = nextMaintenanceOccurrence(maintenance, dayStart);
@@ -20,8 +20,9 @@ export function maintenanceBarStatus(
     const occurrenceEnd = occurrence.end ?? Number.POSITIVE_INFINITY;
     if (occurrence.start >= dayEnd || occurrenceEnd <= dayStart) continue;
 
-    if (maintenance.color === 'red') return 'down';
-    status = 'partial';
+    if (maintenance.barColor === 'red') return 'down';
+    if (maintenance.barColor === 'yellow') status = 'partial';
+    else if (status === undefined) status = 'up';
   }
 
   return status;

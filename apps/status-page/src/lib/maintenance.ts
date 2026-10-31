@@ -170,6 +170,13 @@ export function getMaintenanceColors(color?: string): MaintenanceColors {
   return MAINTENANCE_COLOR_MAP[color];
 }
 
+export const BAR_COLOR_OPTIONS = [
+  { value: '', label: 'Automatic', dot: 'bg-status-unknown-bg' },
+  { value: 'green', label: 'Green', dot: 'bg-status-operational' },
+  { value: 'yellow', label: 'Yellow', dot: 'bg-status-degraded' },
+  { value: 'red', label: 'Red', dot: 'bg-status-down' },
+] as const;
+
 export const SEVERITY_OPTIONS = [
   {
     value: 'green',

@@ -25,6 +25,7 @@ import type { PublicMonitor } from '@/lib/public-view';
 import {
   REPEAT_OPTIONS,
   SEVERITY_OPTIONS,
+  BAR_COLOR_OPTIONS,
   WEEKDAY_NAMES,
   getMaintenanceColors,
 } from '@/lib/maintenance';
@@ -261,8 +262,35 @@ export function MaintenanceFormDialog({
             </div>
           </fieldset>
           <p className="text-xs text-muted-foreground">
-            Yellow marks selected monitors as degraded; red marks them as down while this window is
-            active. This is a display override and does not affect the actual service.
+            Severity labels this maintenance window. It does not change live monitor status, uptime
+            percentages, alerts, or service availability.
+          </p>
+
+          <fieldset>
+            <legend className="text-xs text-muted-foreground">Uptime bar color</legend>
+            <div className="mt-1.5 flex flex-wrap gap-2">
+              {BAR_COLOR_OPTIONS.map((option) => (
+                <button
+                  key={option.value || 'automatic'}
+                  type="button"
+                  onClick={() => updateField('barColor', option.value)}
+                  aria-label={option.label}
+                  aria-pressed={formData.barColor === option.value}
+                  className={`flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm transition-colors ${
+                    formData.barColor === option.value
+                      ? 'border-foreground bg-muted'
+                      : 'border-border hover:border-input'
+                  }`}
+                >
+                  <span className={`h-2.5 w-2.5 rounded-full ${option.dot}`} aria-hidden="true" />
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+          <p className="text-xs text-muted-foreground">
+            This only changes the historical uptime bar color. It does not change uptime percentages,
+            incidents, live monitor status, alerts, or service availability.
           </p>
 
           <div>
