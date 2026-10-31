@@ -11,12 +11,12 @@ afterEach(() => {
 });
 forgetViewAroundEachTest();
 
-const get = (path = '/api/badge.svg?id=minecraft-java') => callBadge(Route, path);
+const get = (path = '/api/badge.svg?id=demo_example') => callBadge(Route, path);
 
 describe('GET /api/badge.svg', () => {
   it('serves a flat badge with its security and JSON cache headers', async () => {
     stubBadgeView();
-    const response = await get('/api/badge.svg?id=minecraft-java&label=api&up=OK');
+    const response = await get('/api/badge.svg?id=demo_example&label=api&up=OK');
     expect(response.status).toBe(200);
     expect(response.headers.get('Content-Type')).toBe('image/svg+xml');
     expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff');
@@ -30,8 +30,8 @@ describe('GET /api/badge.svg', () => {
     expect(svg).toContain('>api</text>');
     expect(svg).toContain('>OK</text>');
     expect(svg).not.toContain('linearGradient');
-    const narrow = await (await get('/api/badge.svg?id=minecraft-java&label=iii')).text();
-    const wide = await (await get('/api/badge.svg?id=minecraft-java&label=WWW')).text();
+    const narrow = await (await get('/api/badge.svg?id=demo_example&label=iii')).text();
+    const wide = await (await get('/api/badge.svg?id=demo_example&label=WWW')).text();
     expect(Number(narrow.match(/width="(\d+)"/)?.[1])).toBeLessThan(
       Number(wide.match(/width="(\d+)"/)?.[1]),
     );
@@ -39,23 +39,24 @@ describe('GET /api/badge.svg', () => {
 
   it('maps down and degraded messages and accepts named and hex colors', async () => {
     stubBadgeView('down');
-    const down = await get('/api/badge.svg?id=minecraft-java&down=OUT&colorDown=important');
+    const down = await get('/api/badge.svg?id=demo_example&down=OUT&colorDown=important');
     const downSvg = await down.text();
     expect(downSvg).toContain('fill="#fe7d37"');
     expect(downSvg).toContain('>OUT</text>');
     forgetCachedView();
     workerConfig.monitors = originalMonitors.map((m) =>
-      m.id === 'minecraft-java' ? { ...m, maxLatencyMs: 10 } : m,
+      m.id === 'demo_example' ? { ...m, maxLatencyMs: 10 } : m,
     );
     stubBadgeView('up', { latest: { ping: 100, loc: 'HEL', time: BADGE_TIME } });
     const degraded = await get(
-      '/api/badge.svg?id=minecraft-java&degraded=SLOW&colorDegraded=%23123abc',
+      '/api/badge.svg?id=demo_example&degraded=SLOW&colorDegraded=%23123abc',
     );
     const degradedSvg = await degraded.text();
     expect(degradedSvg).toContain('fill="#123abc"');
     expect(degradedSvg).toContain('>SLOW</text>');
-    const hexFallback = await get('/api/badge.svg?id=minecraft-java&colorDegraded=abc');
-    expect(await hexFallback.text()).toContain('fill="#abc"');
+    expect(await (await get('/api/badge.svg?id=demo_example&colorDegraded=abc')).text()).toContain(
+      'fill="#abc"',
+    );
   });
 
   it('rejects color injection and inherited object keys', async () => {
@@ -69,7 +70,7 @@ describe('GET /api/badge.svg', () => {
       '" onload="alert(1)',
     ]) {
       const svg = await (
-        await get(`/api/badge.svg?id=minecraft-java&colorUp=${encodeURIComponent(color)}`)
+        await get(`/api/badge.svg?id=demo_example&colorUp=${encodeURIComponent(color)}`)
       ).text();
       expect(svg).toContain('fill="#4c1"');
       expect(svg).not.toContain('onload=');
@@ -80,7 +81,7 @@ describe('GET /api/badge.svg', () => {
   it('escapes XML and caps label and every status message at 64 code points', async () => {
     stubBadgeView();
     const svg = await (
-      await get('/api/badge.svg?id=minecraft-java&label=%3Cscript%3E%26%22%27&up=%3Csvg%3E')
+      await get('/api/badge.svg?id=demo_example&label=%3Cscript%3E%26%22%27&up=%3Csvg%3E')
     ).text();
     expect(svg).toContain('&lt;script&gt;&amp;&quot;&apos;');
     expect(svg).toContain('&lt;svg&gt;');
@@ -88,23 +89,21 @@ describe('GET /api/badge.svg', () => {
     for (const status of ['up', 'down', 'degraded']) {
       forgetCachedView();
       workerConfig.monitors = originalMonitors.map((m) =>
-        m.id === 'minecraft-java' ? { ...m, maxLatencyMs: 10 } : m,
+        m.id === 'demo_example' ? { ...m, maxLatencyMs: 10 } : m,
       );
       stubBadgeView(status === 'down' ? 'down' : 'up', {
         latest: { ping: status === 'degraded' ? 100 : 1, loc: 'HEL', time: BADGE_TIME },
       });
       const long = encodeURIComponent('😀'.repeat(70));
       const capped = await (
-        await get(`/api/badge.svg?id=minecraft-java&label=${long}&${status}=${long}`)
+        await get(`/api/badge.svg?id=demo_example&label=${long}&${status}=${long}`)
       ).text();
       expect(capped).toContain('😀'.repeat(64));
       expect(capped).not.toContain('😀'.repeat(65));
     }
   });
 
-  it(
-    'keeps private and missing monitors out, serves unknown before a first result, and preserves failure statuses',
-    async () => {
+  it('keeps private and missing monitors out, serves unknown before a first result, and preserves failure statuses', async () => {
     stubBadgeView();
     workerConfig.monitors = originalMonitors.map((m) => ({ ...m, private: true }));
     expect((await get()).status).toBe(404);
