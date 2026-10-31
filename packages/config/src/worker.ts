@@ -10,12 +10,12 @@ import type { WorkerConfig } from '@flarewatch/shared';
 export const workerConfig: WorkerConfig = {
   monitors: [
     {
-      id: 'minecraft-java',
-      name: 'Minecraft Java Server',
-      method: 'TCP_PING',
-      target: 'play.thestormsmp.com:25630',
-      maxLatencyMs: 1500,
-      timeout: 10000,
+      id: 'test',
+      name: 'Network Test Site',
+      method: 'DNS',
+      target: 'test.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
       link: 'https://thestormsmp.com',
     },
     {
