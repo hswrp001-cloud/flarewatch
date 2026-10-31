@@ -576,9 +576,7 @@ export function MonitorDetail({
           </div>
         )}
         {operator && monitor.method !== 'HEARTBEAT' && (
-          <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-            <CheckNow key={monitor.id} monitorId={monitor.id} />
-          </div>
+          <CheckNow key={monitor.id} monitorId={monitor.id} />
         )}
       </div>
 
