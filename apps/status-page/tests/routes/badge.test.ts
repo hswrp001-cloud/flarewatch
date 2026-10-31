@@ -10,7 +10,7 @@ afterEach(() => {
 });
 forgetViewAroundEachTest();
 
-const get = (path = '/api/badge?id=minecraft-java') => callBadge(Route, path);
+const get = (path = '/api/badge?id=demo_example') => callBadge(Route, path);
 
 describe('GET /api/badge', () => {
   it('serves unknown before a monitor reports its first result and refuses a missing monitor', async () => {
