@@ -14,7 +14,9 @@ const state: StatusView = {
 };
 
 function days() {
-  const { container } = render(<StatusBar monitorId="api" monitorName="API" state={state} />);
+  const { container } = render(
+    <StatusBar monitorId="api" monitorName="API" state={state} maintenances={[]} />,
+  );
   const labels = (selector: string) =>
     [...container.querySelectorAll(`${selector} [aria-label]`)].map((day) =>
       day.getAttribute('aria-label'),
