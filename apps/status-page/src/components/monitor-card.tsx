@@ -444,7 +444,7 @@ function MonitorSummary({
   detail,
   history,
 }: MonitorViewProps & { detail: boolean; history?: string }) {
-  const { uptimePercent, error, latency } = useMonitorStatus(monitor.id, state);
+  const { uptimePercent, error, latency } = useMonitorStatus(monitor.id, state, maintenances);
   const shown = monitorState(monitor, state, maintenances);
   const heartbeat = deriveHeartbeat(monitor, state);
   const warning = shown === 'degraded' ? state.monitors[monitor.id]?.warning : undefined;
@@ -522,7 +522,7 @@ function MonitorSummary({
 /** One line in the monitor list; the whole row opens the monitor's page. */
 export function MonitorRow({ monitor, state, maintenances, operator }: MonitorViewProps) {
   const heartbeat = deriveHeartbeat(monitor, state);
-  const days = generateDailyStatus(monitor.id, state);
+  const days = generateDailyStatus(monitor.id, state, maintenances);
   return (
     <div
       data-slot="monitor-row"
