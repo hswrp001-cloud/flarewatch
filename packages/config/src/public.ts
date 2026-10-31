@@ -1,14 +1,15 @@
 import type { PageConfig } from '@flarewatch/shared';
 
 export const pageConfig: PageConfig = {
-  title: 'FlareWatch',
+  title: 'The Storm SMP — Network Status',
   links: [
-    { label: 'GitHub', link: 'https://github.com/saminnet/flarewatch' },
-    { label: 'Cloudflare', link: 'https://www.cloudflare.com/' },
+    { label: 'The Storm SMP', link: 'https://thestormsmp.com', highlight: true },
+    { label: 'Minecraft Server', link: 'https://thestormsmp.com' },
+    { label: 'Status API', link: '/api/data' },
   ],
   group: {
-    Websites: ['demo_example', 'demo_cloudflare_docs'],
-    APIs: ['demo_cloudflare_trace', 'demo_one_dns_trace'],
-    'Status Feeds': ['demo_cloudflare_status', 'demo_github_status'],
+    'Minecraft Network': ['minecraft-java', 'minecraft-dns'],
+    'Website & DNS': ['website-dns', 'www-dns'],
+    'Domain & Infrastructure': ['domain-registration'],
   },
 };
