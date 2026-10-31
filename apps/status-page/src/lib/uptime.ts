@@ -1,4 +1,5 @@
-import type { LatencySample, StatusView } from '@flarewatch/shared';
+import type { LatencySample, Maintenance, StatusView } from '@flarewatch/shared';
+import { maintenanceDowntimeMs } from './maintenance-bar';
 import { formatUtc } from './date';
 import { UPTIME_DAYS, UPTIME_THRESHOLDS } from './constants';
 
@@ -17,7 +18,7 @@ function hasMonitorData(monitorId: string, state: StatusView): boolean {
   return nowSec - startedAt >= MIN_MONITOR_AGE_SECONDS;
 }
 
-export function calculateUptimePercent(monitorId: string, state: StatusView): number | null {
+export function calculateUptimePercent(\n  monitorId: string,\n  state: StatusView,\n  maintenances: Maintenance[] = [],\n): number | null {
   const nowSec = getNowSeconds(state);
   if (nowSec === null) return null;
   if (!hasMonitorData(monitorId, state)) return null;
@@ -46,7 +47,7 @@ export function calculateUptimePercent(monitorId: string, state: StatusView): nu
     }
   }
 
-  const uptimePercent = ((totalTimeSec - totalDowntimeSec) / totalTimeSec) * 100;
+  totalDowntimeSec +=\n    maintenanceDowntimeMs(monitorId, windowStartSec * 1000, nowSec * 1000, maintenances) / 1000;\n  totalDowntimeSec = Math.min(totalTimeSec, totalDowntimeSec);\n\n  const uptimePercent = ((totalTimeSec - totalDowntimeSec) / totalTimeSec) * 100;
 
   return Math.max(0, Math.min(100, uptimePercent));
 }
@@ -126,7 +127,7 @@ function generateUnknownDays(baseDate: Date): DailyStatusData[] {
   return days;
 }
 
-export function generateDailyStatus(monitorId: string, state: StatusView): DailyStatusData[] {
+export function generateDailyStatus(\n  monitorId: string,\n  state: StatusView,\n  maintenances: Maintenance[] = [],\n): DailyStatusData[] {
   const days: DailyStatusData[] = [];
   const nowSec = getNowSeconds(state);
 
