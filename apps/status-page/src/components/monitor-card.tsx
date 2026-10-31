@@ -583,7 +583,7 @@ export function MonitorDetail({
             <h2 className="mb-2 text-xs font-medium text-muted-foreground">
               {`Last ${UPTIME_DAYS} days`}
             </h2>
-            <StatusBar monitorId={monitor.id} monitorName={monitor.name} state={state} />
+            <StatusBar monitorId={monitor.id} monitorName={monitor.name} state={state} maintenances={maintenances} />
             {!monitor.hideLatencyChart && (
               <div className="mt-4">
                 <h2 className="mb-2 text-xs font-medium text-muted-foreground">
