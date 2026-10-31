@@ -1,8 +1,4 @@
-import {
-  coversMonitor,
-  nextMaintenanceOccurrence,
-  type Maintenance,
-} from '@flarewatch/shared';
+import { coversMonitor, nextMaintenanceOccurrence, type Maintenance } from '@flarewatch/shared';
 
 /** Return a visual-only history status when a maintenance window overlaps a day. */
 export function maintenanceBarStatus(
