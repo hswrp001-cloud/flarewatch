@@ -32,7 +32,11 @@ export function EmbedPage() {
 
   const monitor = monitors.find((m) => m.id === monitorId);
 
-  const { uptimePercent, error, latency } = useMonitorStatus(monitorId, state ?? EMPTY_STATE, maintenances);
+  const { uptimePercent, error, latency } = useMonitorStatus(
+    monitorId,
+    state ?? EMPTY_STATE,
+    maintenances,
+  );
   const hasStarted = state?.monitors[monitorId]?.startedAt !== undefined;
 
   if (!monitor) {
