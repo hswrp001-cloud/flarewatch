@@ -14,7 +14,7 @@ const authMiddleware = createMiddleware({ type: 'request' }).server(async (opts)
   return authMiddlewareServer(opts);
 });
 
-const DEFAULT_TITLE = 'FlareWatch';
+const DEFAULT_TITLE = 'The Storm SMP — Network Status';
 
 interface RootSearch {
   view?: 'visitor';
