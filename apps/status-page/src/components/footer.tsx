@@ -18,9 +18,7 @@ export function Footer({ config, theme = 'system', showSignIn }: FooterProps) {
     <footer className="mt-auto border-t border-border bg-muted/30">
       <div className={PAGE_CONTAINER_CLASSES}>
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 text-sm">
-          <span className="text-muted-foreground">
-            © {new Date().getFullYear()} The Storm SMP
-          </span>
+          <span className="text-muted-foreground">© {new Date().getFullYear()} The Storm SMP</span>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             {config?.links?.map((link) => (
