@@ -23,12 +23,31 @@ export function monitorState(
   maintenances: Maintenance[],
 ): MonitorState {
   const view = state.monitors[monitor.id];
+  if (view?.status === 'down') return 'down';
+  const override = manualStatusOverride(monitor.id, maintenances, state.lastUpdate * 1000);
+  if (override) return override;
   if (!view) return 'pending';
-  if (view.status === 'down') return 'down';
   if (monitor.method === 'HEARTBEAT' && !view.heartbeat) return 'pending';
   if (view.status === 'late') return 'degraded';
   if (isSlow(monitor, view.latest, maintenances)) return 'degraded';
   return view.status;
+}
+
+/** Active yellow/red maintenance windows act as operator-set status overrides. */
+function manualStatusOverride(
+  monitorId: string,
+  maintenances: Maintenance[],
+  nowMs: number,
+): 'degraded' | 'down' | undefined {
+  const active = maintenances.filter(
+    (maintenance) =>
+      (maintenance.color === 'yellow' || maintenance.color === 'red') &&
+      coversMonitor(maintenance, monitorId) &&
+      isMaintenanceActive(maintenance, nowMs),
+  );
+  if (active.some((maintenance) => maintenance.color === 'red')) return 'down';
+  if (active.some((maintenance) => maintenance.color === 'yellow')) return 'degraded';
+  return undefined;
 }
 
 /** A maintenance window that covers the monitor when the sample was taken excuses it. */
