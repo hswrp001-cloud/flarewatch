@@ -2,6 +2,7 @@ import { useMutation, useQueryClient, type QueryClient } from '@tanstack/react-q
 import {
   isValidMaintenance,
   type Maintenance,
+  type MaintenanceBarColor,
   type MaintenanceConfig,
   type MaintenanceRepeat,
 } from '@flarewatch/shared';
@@ -35,6 +36,7 @@ export type MaintenanceUpdatePatch = {
   end: string | null;
   monitors: string[] | null;
   color: string | null;
+  barColor: MaintenanceBarColor | null;
   repeat?: MaintenanceRepeat | null;
 };
 
