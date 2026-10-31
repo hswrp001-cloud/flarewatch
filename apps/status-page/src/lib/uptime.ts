@@ -18,7 +18,11 @@ function hasMonitorData(monitorId: string, state: StatusView): boolean {
   return nowSec - startedAt >= MIN_MONITOR_AGE_SECONDS;
 }
 
-export function calculateUptimePercent(\n  monitorId: string,\n  state: StatusView,\n  maintenances: Maintenance[] = [],\n): number | null {
+export function calculateUptimePercent(
+  monitorId: string,
+  state: StatusView,
+  maintenances: Maintenance[] = [],
+): number | null {
   const nowSec = getNowSeconds(state);
   if (nowSec === null) return null;
   if (!hasMonitorData(monitorId, state)) return null;
@@ -47,7 +51,11 @@ export function calculateUptimePercent(\n  monitorId: string,\n  state: StatusVi
     }
   }
 
-  totalDowntimeSec +=\n    maintenanceDowntimeMs(monitorId, windowStartSec * 1000, nowSec * 1000, maintenances) / 1000;\n  totalDowntimeSec = Math.min(totalTimeSec, totalDowntimeSec);\n\n  const uptimePercent = ((totalTimeSec - totalDowntimeSec) / totalTimeSec) * 100;
+  totalDowntimeSec +=
+    maintenanceDowntimeMs(monitorId, windowStartSec * 1000, nowSec * 1000, maintenances) / 1000;
+  totalDowntimeSec = Math.min(totalTimeSec, totalDowntimeSec);
+
+  const uptimePercent = ((totalTimeSec - totalDowntimeSec) / totalTimeSec) * 100;
 
   return Math.max(0, Math.min(100, uptimePercent));
 }
@@ -127,7 +135,11 @@ function generateUnknownDays(baseDate: Date): DailyStatusData[] {
   return days;
 }
 
-export function generateDailyStatus(\n  monitorId: string,\n  state: StatusView,\n  maintenances: Maintenance[] = [],\n): DailyStatusData[] {
+export function generateDailyStatus(
+  monitorId: string,
+  state: StatusView,
+  maintenances: Maintenance[] = [],
+): DailyStatusData[] {
   const days: DailyStatusData[] = [];
   const nowSec = getNowSeconds(state);
 
