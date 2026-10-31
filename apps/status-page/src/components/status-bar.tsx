@@ -104,6 +104,8 @@ export function StatusBar({ monitorId, monitorName, state, maintenances }: Statu
             day={day}
             isMobile={true}
             onClick={handleDayClick}
+            monitorId={monitorId}
+            maintenances={maintenances}
           />
         ))}
       </div>
