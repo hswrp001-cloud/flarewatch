@@ -23,7 +23,7 @@ export function Header({ config, session, visitorView }: HeaderProps) {
             <IconFlame className="h-7 w-7 shrink-0 text-primary" />
           )}
           <span className="truncate text-lg font-semibold text-foreground transition-colors group-hover:text-primary/80">
-            {config?.title || 'FlareWatch'}
+            {config?.title || 'The Storm SMP — Network Status'}
           </span>
         </Link>
 
