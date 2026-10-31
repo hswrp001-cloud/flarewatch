@@ -72,7 +72,7 @@ interface StatusBarProps {
 
 export function StatusBar({ monitorId, monitorName, state, maintenances }: StatusBarProps) {
   const [selectedDay, setSelectedDay] = useState<DailyStatusData | null>(null);
-  const dailyStatus = generateDailyStatus(monitorId, state);
+  const dailyStatus = generateDailyStatus(monitorId, state, maintenances);
 
   const { ref, width, isReady } = useContainerWidth();
 
