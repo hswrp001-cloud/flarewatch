@@ -1,4 +1,5 @@
 import { vi } from 'vite-plus/test';
+import { workerConfig } from '@flarewatch/config/worker';
 import { authMiddlewareServer } from '@/server/auth-middleware';
 import { stubMonitorWorker } from './bindings';
 
@@ -6,6 +7,19 @@ export const BADGE_TIME = Date.parse('2025-01-15T12:00:00Z') / 1000;
 
 export function stubBadgeView(status: 'up' | 'down' = 'up', extra = {}): void {
   vi.stubEnv('DEV', false);
+  if (!workerConfig.monitors.some((monitor) => monitor.id === 'demo_example')) {
+    workerConfig.monitors = [
+      ...workerConfig.monitors,
+      {
+        id: 'demo_example',
+        name: 'Badge test monitor',
+        method: 'GET',
+        target: 'https://example.com',
+        maxLatencyMs: 10,
+        private: workerConfig.monitors.length > 0 && workerConfig.monitors.every((monitor) => monitor.private),
+      },
+    ];
+  }
   stubMonitorWorker(async () =>
     Response.json({
       lastUpdate: BADGE_TIME,
