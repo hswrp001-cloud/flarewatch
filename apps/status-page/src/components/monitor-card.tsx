@@ -536,7 +536,12 @@ export function MonitorRow({ monitor, state, maintenances, operator }: MonitorVi
         detail={false}
         history={barsSummary(days, heartbeat)}
       />
-      <RowBars days={days} heartbeat={heartbeat} monitorId={monitor.id} maintenances={maintenances} />
+      <RowBars
+        days={days}
+        heartbeat={heartbeat}
+        monitorId={monitor.id}
+        maintenances={maintenances}
+      />
     </div>
   );
 }
@@ -571,7 +576,9 @@ export function MonitorDetail({
           </div>
         )}
         {operator && monitor.method !== 'HEARTBEAT' && (
-          <CheckNow key={monitor.id} monitorId={monitor.id} />
+          <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+            <CheckNow key={monitor.id} monitorId={monitor.id} />
+          </div>
         )}
       </div>
 
@@ -583,7 +590,12 @@ export function MonitorDetail({
             <h2 className="mb-2 text-xs font-medium text-muted-foreground">
               {`Last ${UPTIME_DAYS} days`}
             </h2>
-            <StatusBar monitorId={monitor.id} monitorName={monitor.name} state={state} maintenances={maintenances} />
+            <StatusBar
+              monitorId={monitor.id}
+              monitorName={monitor.name}
+              state={state}
+              maintenances={maintenances}
+            />
             {!monitor.hideLatencyChart && (
               <div className="mt-4">
                 <h2 className="mb-2 text-xs font-medium text-muted-foreground">
