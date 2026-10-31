@@ -10,20 +10,24 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { IconX } from '@tabler/icons-react';
-import type { StatusView } from '@flarewatch/shared';
+import type { Maintenance, StatusView } from '@flarewatch/shared';
 import { formatPercent, generateDailyStatus, type DailyStatusData } from '@/lib/uptime';
 import { formatUtc, formatDuration } from '@/lib/date';
 import { cn } from '@/lib/utils';
 import { useContainerWidth } from '@/lib/hooks/use-container-width';
 import { STATUS_BAR } from '@/lib/constants';
+import { maintenanceBarStatus } from '@/lib/maintenance-bar';
 
 interface StatusBarSegmentProps {
   day: DailyStatusData;
   isMobile: boolean;
   onClick: (day: DailyStatusData) => void;
+  monitorId: string;
+  maintenances: Maintenance[];
 }
 
-function StatusBarSegment({ day, isMobile, onClick }: StatusBarSegmentProps) {
+function StatusBarSegment({ day, isMobile, onClick, monitorId, maintenances }: StatusBarSegmentProps) {
+  const displayStatus = maintenanceBarStatus(monitorId, day.date, maintenances) ?? day.status;
   return (
     <Tooltip>
       <BarCell
@@ -32,7 +36,7 @@ function StatusBarSegment({ day, isMobile, onClick }: StatusBarSegmentProps) {
             ? `No data for ${formatUtc(day.date, 'MMM d, yyyy')}`
             : `${formatPercent(day.uptime, 2)} uptime on ${formatUtc(day.date, 'MMM d, yyyy')}`
         }
-        status={day.status}
+        status={displayStatus}
         interactive={day.downtime > 0}
         className={cn('h-6', isMobile ? 'w-2.5 shrink-0' : 'min-w-0 flex-1')}
         onClick={() => onClick(day)}
@@ -57,9 +61,10 @@ interface StatusBarProps {
   monitorId: string;
   monitorName?: string;
   state: StatusView;
+  maintenances: Maintenance[];
 }
 
-export function StatusBar({ monitorId, monitorName, state }: StatusBarProps) {
+export function StatusBar({ monitorId, monitorName, state, maintenances }: StatusBarProps) {
   const [selectedDay, setSelectedDay] = useState<DailyStatusData | null>(null);
   const dailyStatus = generateDailyStatus(monitorId, state);
 
@@ -86,6 +91,8 @@ export function StatusBar({ monitorId, monitorName, state }: StatusBarProps) {
             day={day}
             isMobile={false}
             onClick={handleDayClick}
+            monitorId={monitorId}
+            maintenances={maintenances}
           />
         ))}
       </div>
