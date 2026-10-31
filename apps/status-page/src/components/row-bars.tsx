@@ -54,7 +54,8 @@ export function RowBars({
   if (!heartbeat) {
     const cells = days.map((day) => ({
       key: day.date.toISOString(),
-      className: STATUS_COLORS[maintenanceBarStatus(monitorId, day.date, maintenances) ?? day.status],
+      className:
+        STATUS_COLORS[maintenanceBarStatus(monitorId, day.date, maintenances) ?? day.status],
     }));
     return <Cells cells={cells} />;
   }
