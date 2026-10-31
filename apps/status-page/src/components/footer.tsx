@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router';
-import { IconFlame } from '@tabler/icons-react';
 import type { PageConfig } from '@flarewatch/shared';
 import { ThemeToggle } from '@/components/theme-toggle';
 import type { ThemePreference } from '@/lib/theme-server';
@@ -19,20 +18,9 @@ export function Footer({ config, theme = 'system', showSignIn }: FooterProps) {
     <footer className="mt-auto border-t border-border bg-muted/30">
       <div className={PAGE_CONTAINER_CLASSES}>
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 text-sm">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <IconFlame className="h-4 w-4 text-primary" />
-            <span>
-              Powered by{' '}
-              <a
-                href="https://github.com/saminnet/flarewatch"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-foreground hover:underline"
-              >
-                FlareWatch
-              </a>
-            </span>
-          </div>
+          <span className="text-muted-foreground">
+            © {new Date().getFullYear()} The Storm SMP
+          </span>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             {config?.links?.map((link) => (
