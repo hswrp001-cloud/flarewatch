@@ -536,7 +536,7 @@ export function MonitorRow({ monitor, state, maintenances, operator }: MonitorVi
         detail={false}
         history={barsSummary(days, heartbeat)}
       />
-      <RowBars days={days} heartbeat={heartbeat} />
+      <RowBars days={days} heartbeat={heartbeat} monitorId={monitor.id} maintenances={maintenances} />
     </div>
   );
 }
