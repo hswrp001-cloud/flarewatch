@@ -215,7 +215,14 @@ export function generateDailyStatus(
       }
     }
 
+    downtimeInDay += maintenanceDowntimeMs(
+      monitorId,
+      effectiveDayStartMs,
+      effectiveDayEndMs,
+      maintenances,
+    );
     const dayDuration = effectiveDayEndMs - effectiveDayStartMs;
+    downtimeInDay = Math.min(dayDuration, downtimeInDay);
     const uptimePercent =
       dayDuration > 0 ? ((dayDuration - downtimeInDay) / dayDuration) * 100 : 100;
 
