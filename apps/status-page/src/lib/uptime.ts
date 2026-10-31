@@ -27,8 +27,7 @@ export function calculateUptimePercent(
   if (nowSec === null) return null;
   if (!hasMonitorData(monitorId, state)) return null;
 
-  const incidents = state.monitors[monitorId]?.incidents;
-  if (!incidents || incidents.length === 0) return 100;
+  const incidents = state.monitors[monitorId]?.incidents ?? [];
   const windowDaysAgoSec = nowSec - UPTIME_DAYS * 24 * 60 * 60;
 
   const monitorStartSec = state.monitors[monitorId]?.startedAt;
