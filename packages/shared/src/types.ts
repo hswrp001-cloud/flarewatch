@@ -61,6 +61,8 @@ export type MaintenanceRepeat = {
   timeZone?: string;
 };
 
+export type MaintenanceBarColor = 'green' | 'yellow' | 'red';
+
 export type MaintenanceConfig = {
   monitors?: string[];
   title?: string;
@@ -68,6 +70,8 @@ export type MaintenanceConfig = {
   start: number | string;
   end?: number | string;
   color?: string;
+  /** Display-only color for uptime history bars; does not change uptime calculations. */
+  barColor?: MaintenanceBarColor;
   repeat?: MaintenanceRepeat;
 };
 
