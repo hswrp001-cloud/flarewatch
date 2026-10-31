@@ -4,6 +4,8 @@ import { RUN_CELL_CLASSES, RUNNING_CELL_CLASSES } from '@/components/ui/status-c
 import type { HeartbeatView } from '@/lib/heartbeat';
 import { STATUS_COLORS } from '@/lib/constants';
 import type { DailyStatusData } from '@/lib/uptime';
+import type { Maintenance } from '@flarewatch/shared';
+import { maintenanceBarStatus } from '@/lib/maintenance-bar';
 import { cn } from '@/lib/utils';
 
 /** Cells shown in a narrow row: the last 30 of the 90. */
@@ -41,14 +43,18 @@ function Cells({ cells }: { cells: Cell[] }) {
 export function RowBars({
   days,
   heartbeat,
+  monitorId,
+  maintenances,
 }: {
   days: DailyStatusData[];
   heartbeat: HeartbeatView | null;
+  monitorId: string;
+  maintenances: Maintenance[];
 }) {
   if (!heartbeat) {
     const cells = days.map((day) => ({
       key: day.date.toISOString(),
-      className: STATUS_COLORS[day.status],
+      className: STATUS_COLORS[maintenanceBarStatus(monitorId, day.date, maintenances) ?? day.status],
     }));
     return <Cells cells={cells} />;
   }
