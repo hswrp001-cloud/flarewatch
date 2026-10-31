@@ -16,7 +16,9 @@ export function stubBadgeView(status: 'up' | 'down' = 'up', extra = {}): void {
         method: 'GET',
         target: 'https://example.com',
         maxLatencyMs: 10,
-        private: workerConfig.monitors.length > 0 && workerConfig.monitors.every((monitor) => monitor.private),
+        private:
+          workerConfig.monitors.length > 0 &&
+          workerConfig.monitors.every((monitor) => monitor.private),
       },
     ];
   }
