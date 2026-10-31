@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vite-plus/test';
 import type { Maintenance } from '@flarewatch/shared';
 import { maintenanceBarStatus } from '@/lib/maintenance-bar';
 
-const DAY = 24 * 60 * 60 * 1000;
 const date = new Date('2026-10-30T00:00:00.000Z');
 
 function window(
