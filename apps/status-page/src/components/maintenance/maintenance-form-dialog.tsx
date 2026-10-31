@@ -261,7 +261,8 @@ export function MaintenanceFormDialog({
             </div>
           </fieldset>
           <p className="text-xs text-muted-foreground">
-            Yellow marks selected monitors as degraded; red marks them as down while this window is active. This is a display override and does not affect the actual service.
+            Yellow marks selected monitors as degraded; red marks them as down while this window is
+            active. This is a display override and does not affect the actual service.
           </p>
 
           <div>
