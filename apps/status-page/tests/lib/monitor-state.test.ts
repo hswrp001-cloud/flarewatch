@@ -18,13 +18,19 @@ const OPEN = { start: [1000], error: ['Error'] };
 const CLOSED = { start: [1000], end: 2000, error: ['Error'] };
 const latest = (ping: number) => ({ latest: { loc: 'FRA', ping, time: SAMPLE_AT } });
 
-function window(start: number, end?: number, monitors?: string[]): Maintenance {
+function window(
+  start: number,
+  end?: number,
+  monitors?: string[],
+  color?: 'yellow' | 'red',
+): Maintenance {
   return {
     id: `w${start}`,
     start: new Date(start * 1000).toISOString(),
     ...(end !== undefined && { end: new Date(end * 1000).toISOString() }),
     ...(monitors && { monitors }),
     body: 'Planned work',
+    ...(color && { color }),
     createdAt: 0,
     updatedAt: 0,
   };
@@ -116,6 +122,27 @@ const cases: Case[] = [
     latest(9000),
     'degraded',
     [window(SAMPLE_AT + 60, undefined, ['m'])],
+  ],
+  [
+    'an active yellow maintenance window manually marks a monitor degraded',
+    check,
+    { status: 'up' },
+    'degraded',
+    [window(SAMPLE_AT - 60, SAMPLE_AT + 60, ['m'], 'yellow')],
+  ],
+  [
+    'an active red maintenance window manually marks a monitor down',
+    check,
+    { status: 'up' },
+    'down',
+    [window(SAMPLE_AT - 60, SAMPLE_AT + 60, ['m'], 'red')],
+  ],
+  [
+    'a red maintenance override can mark a monitor down before its first check',
+    check,
+    undefined,
+    'down',
+    [window(SAMPLE_AT - 60, SAMPLE_AT + 60, ['m'], 'red')],
   ],
 ];
 
