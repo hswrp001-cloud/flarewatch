@@ -54,7 +54,9 @@ describe('GET /api/badge.svg', () => {
     const degradedSvg = await degraded.text();
     expect(degradedSvg).toContain('fill="#123abc"');
     expect(degradedSvg).toContain('>SLOW</text>');
-    expect(await (await get('/api/badge.svg?id=minecraft-java&colorDegraded=abc')).text()).toContain(
+    expect(
+      await (await get('/api/badge.svg?id=minecraft-java&colorDegraded=abc')).text(),
+    ).toContain(
       'fill="#abc"',
     );
   });
