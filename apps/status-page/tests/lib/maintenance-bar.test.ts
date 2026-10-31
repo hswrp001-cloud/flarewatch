@@ -27,7 +27,13 @@ describe('maintenanceBarStatus', () => {
   it('shows yellow for a day that overlaps yellow maintenance', () => {
     expect(
       maintenanceBarStatus('site', date, [
-        window('yellow', '2026-10-30T10:00:00Z', '2026-10-30T11:00:00Z', 'yellow', ['site']),
+        window(
+          'yellow',
+          '2026-10-30T10:00:00Z',
+          '2026-10-30T11:00:00Z',
+          'yellow',
+          ['site'],
+        ),
       ]),
     ).toBe('partial');
   });
@@ -43,7 +49,13 @@ describe('maintenanceBarStatus', () => {
   it('does not color a monitor excluded from the maintenance window', () => {
     expect(
       maintenanceBarStatus('site', date, [
-        window('yellow', '2026-10-30T10:00:00Z', '2026-10-30T11:00:00Z', 'yellow', ['other']),
+        window(
+          'yellow',
+          '2026-10-30T10:00:00Z',
+          '2026-10-30T11:00:00Z',
+          'yellow',
+          ['other'],
+        ),
       ]),
     ).toBeUndefined();
   });
@@ -51,7 +63,13 @@ describe('maintenanceBarStatus', () => {
   it('does not color a day outside the maintenance window', () => {
     expect(
       maintenanceBarStatus('site', date, [
-        window('yellow', '2026-10-31T10:00:00Z', '2026-10-31T11:00:00Z', 'yellow', ['site']),
+        window(
+          'yellow',
+          '2026-10-31T10:00:00Z',
+          '2026-10-31T11:00:00Z',
+          'yellow',
+          ['site'],
+        ),
       ]),
     ).toBeUndefined();
   });
@@ -67,7 +85,13 @@ describe('maintenanceBarStatus', () => {
   it('lets red take priority over yellow when both overlap', () => {
     expect(
       maintenanceBarStatus('site', date, [
-        window('yellow', '2026-10-30T10:00:00Z', '2026-10-30T11:00:00Z', 'yellow', ['site']),
+        window(
+          'yellow',
+          '2026-10-30T10:00:00Z',
+          '2026-10-30T11:00:00Z',
+          'yellow',
+          ['site'],
+        ),
         window('red', '2026-10-30T12:00:00Z', '2026-10-30T13:00:00Z', 'red', ['site']),
       ]),
     ).toBe('down');
