@@ -3,9 +3,9 @@ import type { WorkerConfig } from '@flarewatch/shared';
 /**
  * The Storm SMP production monitors.
  *
- * HTTP checks for domains inside the same Cloudflare zone must use an
- * external check location (Globalping or flarewatch-proxy). DNS checks and
- * the Minecraft TCP check run directly and do not depend on that proxy.
+ * Website DNS checks and the Minecraft TCP check run directly. Full HTTP
+ * checks for sites in this Cloudflare zone need an external check location
+ * (Globalping or flarewatch-proxy).
  */
 export const workerConfig: WorkerConfig = {
   monitors: [
@@ -19,8 +19,8 @@ export const workerConfig: WorkerConfig = {
       link: 'https://thestormsmp.com',
     },
     {
-      id: 'website-dns',
-      name: 'Main Website DNS',
+      id: 'main-website',
+      name: 'Main website',
       method: 'DNS',
       target: 'thestormsmp.com',
       dnsRecordType: 'A',
@@ -28,13 +28,58 @@ export const workerConfig: WorkerConfig = {
       link: 'https://thestormsmp.com',
     },
     {
-      id: 'www-dns',
-      name: 'WWW Website DNS',
+      id: 'dajo',
+      name: 'Dajo',
+      method: 'DNS',
+      target: 'dajo.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://dajo.thestormsmp.com',
+    },
+    {
+      id: 'hudo',
+      name: 'Hudo',
+      method: 'DNS',
+      target: 'hudo.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://hudo.thestormsmp.com',
+    },
+    {
+      id: 'syphon',
+      name: 'Syphon',
+      method: 'DNS',
+      target: 'syphon.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://syphon.thestormsmp.com',
+    },
+    {
+      id: 'david',
+      name: 'David',
+      method: 'DNS',
+      target: 'david.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://david.thestormsmp.com',
+    },
+    {
+      id: 'main-website-www',
+      name: 'Main website (www)',
       method: 'DNS',
       target: 'www.thestormsmp.com',
       dnsRecordType: 'A',
       checkEveryMinutes: 1,
       link: 'https://www.thestormsmp.com',
+    },
+    {
+      id: 'documentation',
+      name: 'Documentation',
+      method: 'DNS',
+      target: 'docs.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://docs.thestormsmp.com',
     },
     {
       id: 'minecraft-dns',
