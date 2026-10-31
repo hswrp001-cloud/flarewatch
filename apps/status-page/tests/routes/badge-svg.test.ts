@@ -54,11 +54,8 @@ describe('GET /api/badge.svg', () => {
     const degradedSvg = await degraded.text();
     expect(degradedSvg).toContain('fill="#123abc"');
     expect(degradedSvg).toContain('>SLOW</text>');
-    expect(
-      await (await get('/api/badge.svg?id=minecraft-java&colorDegraded=abc')).text(),
-    ).toContain(
-      'fill="#abc"',
-    );
+    const hexFallback = await get('/api/badge.svg?id=minecraft-java&colorDegraded=abc');
+    expect(await hexFallback.text()).toContain('fill="#abc"');
   });
 
   it('rejects color injection and inherited object keys', async () => {
@@ -105,7 +102,9 @@ describe('GET /api/badge.svg', () => {
     }
   });
 
-  it('keeps private and missing monitors out, serves unknown before a first result, and preserves failure statuses', async () => {
+  it(
+    'keeps private and missing monitors out, serves unknown before a first result, and preserves failure statuses',
+    async () => {
     stubBadgeView();
     workerConfig.monitors = originalMonitors.map((m) => ({ ...m, private: true }));
     expect((await get()).status).toBe(404);
