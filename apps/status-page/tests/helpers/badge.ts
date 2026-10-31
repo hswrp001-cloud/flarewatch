@@ -28,7 +28,7 @@ export function stubBadgeView(status: 'up' | 'down' = 'up', extra = {}): void {
       maintenances: [],
       announcements: [],
       monitors: {
-        'minecraft-java': {
+        demo_example: {
           status,
           startedAt: BADGE_TIME,
           incidents: status === 'down' ? [{ start: [BADGE_TIME], error: ['Outage'] }] : [],
