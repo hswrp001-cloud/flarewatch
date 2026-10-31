@@ -1,69 +1,58 @@
 import type { WorkerConfig } from '@flarewatch/shared';
 
+/**
+ * The Storm SMP production monitors.
+ *
+ * HTTP checks for domains inside the same Cloudflare zone must use an
+ * external check location (Globalping or flarewatch-proxy). DNS checks and
+ * the Minecraft TCP check run directly and do not depend on that proxy.
+ */
 export const workerConfig: WorkerConfig = {
-  /**
-   * Safe-default demo monitors, so a fresh fork/template deploy shows a
-   * working status page without any secrets. Replace with your own services
-   * before relying on FlareWatch for real monitoring.
-   */
   monitors: [
     {
-      id: 'demo_example',
-      name: 'Example Domain',
-      method: 'GET',
-      target: 'https://example.com',
-      expectedCodes: [200],
-      responseKeyword: 'Example Domain',
+      id: 'minecraft-java',
+      name: 'Minecraft Java Server',
+      method: 'TCP_PING',
+      target: 'play.thestormsmp.com:25630',
+      maxLatencyMs: 1500,
       timeout: 10000,
-      link: false,
+      link: 'https://thestormsmp.com',
     },
     {
-      id: 'demo_cloudflare_trace',
-      name: 'Cloudflare Trace',
-      method: 'GET',
-      target: 'https://cloudflare.com/cdn-cgi/trace',
-      expectedCodes: [200],
-      responseKeyword: 'colo=',
-      timeout: 10000,
-      link: false,
+      id: 'website-dns',
+      name: 'Main Website DNS',
+      method: 'DNS',
+      target: 'thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://thestormsmp.com',
     },
     {
-      id: 'demo_cloudflare_status',
-      name: 'Cloudflare Status API',
-      method: 'GET',
-      target: 'https://www.cloudflarestatus.com/api/v2/status.json',
-      expectedCodes: [200],
-      responseKeyword: '"status"',
-      timeout: 10000,
-      link: 'https://www.cloudflarestatus.com', // Links to status page, not the API endpoint
+      id: 'www-dns',
+      name: 'WWW Website DNS',
+      method: 'DNS',
+      target: 'www.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://www.thestormsmp.com',
     },
     {
-      id: 'demo_cloudflare_docs',
-      name: 'Cloudflare Docs',
-      method: 'GET',
-      target: 'https://developers.cloudflare.com',
-      expectedCodes: [200],
-      timeout: 10000,
+      id: 'minecraft-dns',
+      name: 'Minecraft Address DNS',
+      method: 'DNS',
+      target: 'play.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://thestormsmp.com',
     },
     {
-      id: 'demo_one_dns_trace',
-      name: '1.1.1.1 Trace',
-      method: 'GET',
-      target: 'https://1.1.1.1/cdn-cgi/trace',
-      expectedCodes: [200],
-      responseKeyword: 'colo=',
-      timeout: 10000,
-      link: false,
-    },
-    {
-      id: 'demo_github_status',
-      name: 'GitHub Status API',
-      method: 'GET',
-      target: 'https://www.githubstatus.com/api/v2/status.json',
-      expectedCodes: [200],
-      responseKeyword: '"status"',
-      timeout: 10000,
-      link: 'https://www.githubstatus.com',
+      id: 'domain-registration',
+      name: 'Domain Registration',
+      method: 'DOMAIN',
+      target: 'thestormsmp.com',
+      domainExpiryDays: 30,
+      checkEveryMinutes: 1440,
+      link: 'https://thestormsmp.com',
     },
   ],
 };
