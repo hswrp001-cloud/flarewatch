@@ -42,11 +42,7 @@ export function maintenanceDowntimeMs(
     if (!coversMonitor(maintenance, monitorId)) continue;
 
     let cursor = startMs;
-    for (
-      let occurrenceCount = 0;
-      occurrenceCount < 1000 && cursor < endMs;
-      occurrenceCount++
-    ) {
+    for (let occurrenceCount = 0; occurrenceCount < 1000 && cursor < endMs; occurrenceCount++) {
       const occurrence = nextMaintenanceOccurrence(maintenance, cursor);
       if (!occurrence || occurrence.start >= endMs) break;
 
