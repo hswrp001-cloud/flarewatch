@@ -20,7 +20,7 @@ function generateMaintenanceId(): string {
   return `maint_${Date.now().toString(36)}_${crypto.randomUUID().slice(0, 8)}`;
 }
 
-const FIELDS = ['title', 'body', 'start', 'end', 'monitors', 'color', 'repeat'] as const;
+const FIELDS = ['title', 'body', 'start', 'end', 'monitors', 'color', 'barColor', 'repeat'] as const;
 
 type Field = (typeof FIELDS)[number];
 
