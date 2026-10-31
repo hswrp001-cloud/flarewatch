@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   normalizeMaintenance,
   type Maintenance,
+  type MaintenanceBarColor,
   type MaintenanceConfig,
   type MaintenanceRepeat,
 } from '@flarewatch/shared';
@@ -14,6 +15,7 @@ export type MaintenanceFormData = {
   end: Date | undefined;
   monitors: string[];
   color: string;
+  barColor: MaintenanceBarColor | '';
   repeat: MaintenanceRepeat['every'] | '';
   weekdays: number[];
   dayOfMonth: string;
@@ -32,6 +34,7 @@ function formFrom(maintenance?: Maintenance): MaintenanceFormData {
     end: maintenance?.end ? new Date(maintenance.end) : undefined,
     monitors: maintenance?.monitors ?? [],
     color: maintenance?.color ?? 'yellow',
+    barColor: maintenance?.barColor ?? '',
     repeat: repeat?.every ?? '',
     weekdays: repeat?.weekdays ?? [],
     dayOfMonth: repeat?.dayOfMonth?.toString() ?? '',
@@ -61,6 +64,7 @@ export function toMaintenanceConfig(form: ValidForm): MaintenanceConfig {
     end: form.end?.toISOString(),
     monitors: form.monitors.length ? form.monitors : undefined,
     color: form.color.trim() || undefined,
+    barColor: form.barColor || undefined,
     repeat: toRepeat(form),
   };
 }
@@ -74,6 +78,7 @@ export function toMaintenancePatch(form: ValidForm): MaintenanceUpdatePatch {
     end: form.end?.toISOString() ?? null,
     monitors: form.monitors.length ? form.monitors : null,
     color: form.color.trim() || null,
+    barColor: form.barColor || null,
     repeat: toRepeat(form) ?? null,
   };
 }
