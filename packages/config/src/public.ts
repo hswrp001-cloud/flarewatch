@@ -24,6 +24,6 @@ export const pageConfig: PageConfig = {
       'main-website-www',
       'documentation',
     ],
-    'Domain & Infrastructure': ['domain-registration', 'test'],
+    'Domain & Infrastructure': ['test'],
   },
 };
