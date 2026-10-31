@@ -15,7 +15,15 @@ export const pageConfig: PageConfig = {
   ],
   group: {
     'Minecraft Network': ['minecraft-java', 'minecraft-dns'],
-    'Websites': ['main-website', 'dajo', 'hudo', 'syphon', 'david', 'main-website-www', 'documentation'],
+    Websites: [
+      'main-website',
+      'dajo',
+      'hudo',
+      'syphon',
+      'david',
+      'main-website-www',
+      'documentation',
+    ],
     'Domain & Infrastructure': ['domain-registration'],
   },
 };
