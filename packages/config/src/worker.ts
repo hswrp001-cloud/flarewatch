@@ -82,6 +82,15 @@ export const workerConfig: WorkerConfig = {
       link: 'https://docs.thestormsmp.com',
     },
     {
+      id: 'media',
+      name: 'Media',
+      method: 'DNS',
+      target: 'media.thestormsmp.com',
+      dnsRecordType: 'A',
+      checkEveryMinutes: 1,
+      link: 'https://media.thestormsmp.com',
+    },
+    {
       id: 'minecraft-dns',
       name: 'Minecraft Java Server',
       method: 'DNS',
