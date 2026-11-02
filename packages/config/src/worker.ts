@@ -10,10 +10,10 @@ import type { WorkerConfig } from '@flarewatch/shared';
 export const workerConfig: WorkerConfig = {
   monitors: [
     {
-      id: 'test',
-      name: 'Network Test Site',
+      id: 'Media Server',
+      name: 'Network Media Server',
       method: 'DNS',
-      target: 'test.thestormsmp.com',
+      target: 'media.thestormsmp.com',
       dnsRecordType: 'A',
       checkEveryMinutes: 1,
       link: 'https://thestormsmp.com',
