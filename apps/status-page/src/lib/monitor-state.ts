@@ -1,5 +1,6 @@
 import {
   coversMonitor,
+  isMaintenanceActive,
   type LatencySample,
   type Maintenance,
   type StatusView,
