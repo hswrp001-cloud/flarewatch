@@ -24,6 +24,17 @@ export function monitorState(
 ): MonitorState {
   const view = state.monitors[monitor.id];
   if (view?.status === 'down') return 'down';
+
+  // Severity colors are explicit status overrides; blue/green remain informational.
+  const activeSeverity = maintenances.find(
+    (maintenance) =>
+      coversMonitor(maintenance, monitor.id) &&
+      isMaintenanceActive(maintenance, state.lastUpdate * 1000) &&
+      (maintenance.color === 'red' || maintenance.color === 'yellow'),
+  )?.color;
+  if (activeSeverity === 'red') return 'down';
+  if (activeSeverity === 'yellow') return 'degraded';
+
   if (!view) return 'pending';
   if (monitor.method === 'HEARTBEAT' && !view.heartbeat) return 'pending';
   if (view.status === 'late') return 'degraded';
