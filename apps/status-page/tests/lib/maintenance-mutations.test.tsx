@@ -119,6 +119,7 @@ function ExpiredEditor() {
               end: null,
               monitors: null,
               color: null,
+              barColor: null,
             },
           })
         }
