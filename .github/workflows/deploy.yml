@@ -40,6 +40,10 @@ jobs:
           restore-keys: |
             vite-task-${{ runner.os }}-${{ runner.arch }}-
 
+      - name: Apply repository formatting
+        timeout-minutes: 5
+        run: vp check --fix
+
       - name: Check formatting, types, and lint
         timeout-minutes: 5
         run: vp check
