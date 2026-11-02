@@ -73,7 +73,6 @@ function AdminList({
                 end: null,
                 monitors: null,
                 color: null,
-              barColor: null,
                 barColor: null,
               },
             });
