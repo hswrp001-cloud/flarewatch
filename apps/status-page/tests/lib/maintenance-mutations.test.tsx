@@ -73,6 +73,8 @@ function AdminList({
                 end: null,
                 monitors: null,
                 color: null,
+              barColor: null,
+                barColor: null,
               },
             });
           } else if (remove) deleteWindow.mutate(saved.id);
